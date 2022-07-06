@@ -1,7 +1,15 @@
 
 <?php
+
+require './connect.php';
+
+$toReturn;
 if (($handle = fopen("Artikel.csv", "r")) !== FALSE) {
-	$data = fgetcsv($handle, 0, ';');
+	while (($data = fgetcsv($handle, 0, ';')) !== FALSE) {
+		$toReturn[] = $data;
+	}
+	fclose($handle);
 }
+echo json_encode(['data'=>$toReturn]);
 
 ?>

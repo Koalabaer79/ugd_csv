@@ -1,3 +1,59 @@
-<div class="table">
-  Tabelle
+<h1>
+  UGD Testaufgabe - CSV Handling
+</h1>
+
+
+<div class="actions">
+  <button class="centerBtn" type="submit" mat-button color="primary" (click)="newArticle()" title="Neuen Artikel anlegen">Neuer Artikel</button>
+</div>   
+
+<div class="newBox" *ngIf="showBox">
+  <div class="newEntry">
+    <h2>{{ boxTitle }}</h2>
+    <mat-form-field *ngFor="let elem of displayedColumns, let i = index" class="item">
+      <input matInput placeholder="{{elem}}" [(ngModel)]="product[i]">
+    </mat-form-field>
+    <div class="actions">
+      <button *ngIf="updaten" class="centerBtn" type="submit" mat-button color="primary" (click)="updateData()">Update</button>
+      <button *ngIf="anlegen" class="centerBtn" type="submit" mat-button color="primary" (click)="createNew()">Anlegen</button>
+      <button class="red" type="submit" mat-button (click)="cancel()">Abbrechen</button>
+    </div>   
+  </div>
 </div>
+
+<div class="tableCont">
+
+  <table class="table" mat-table [dataSource]="dataSource" multiTemplateDataRows>
+
+    <ng-container 
+      *ngFor="let colName of displayedColumns; let i = index" 
+      matColumnDef="{{ displayedColumns[i] }}"
+    >
+
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="tableTitle">
+        <span>
+          {{ colName }}
+        </span>
+      </th>
+
+      <td mat-cell *matCellDef="let row" class="tableRow">
+        <span>
+          {{ row[i] }}
+        </span>
+      </td>
+
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true;"></tr>
+    <tr class="hover" mat-row *matRowDef="let row;columns:displayedColumns;let i=index;" (click)="editArticle(row)"></tr>
+    
+  </table>
+
+</div>
+
+<mat-paginator class="paginator"
+  #paginator
+  [pageSize]="50"
+  [pageSizeOptions]="[10, 25, 50, 100]"
+  showFirstLastButtons>
+</mat-paginator>
